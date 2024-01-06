@@ -59,7 +59,6 @@ void setbit(struct bitmap_t * b, uint64_t index)
 #endif
 
     setbit_new(b, index);
-
 }
 
 uint64_t get_index(int w_b, int h_b)
@@ -188,13 +187,13 @@ void build_debug_spec(struct map_context_t * context)
     for (y = 0; y < w_line_count; y++) {
         memset(line, 0, sizeof(line));
         switch (y) {
-            case 0:
+        case 0:
             strcpy(line, "P000"); break;
-            case 1:
+        case 1:
             strcpy(line, "PPPP"); break;
-            case 2:
+        case 2:
             strcpy(line, "000S"); break;
-            case 3:
+        case 3:
             strcpy(line, "0EP0"); break;
         }
         for (x = 0; x < h_line_count; x++) {
@@ -272,8 +271,8 @@ void build_spec(struct map_context_t * context)
 struct bitmap_t * init_bitmap(struct bitmap_t * b, int depth, int size)
 {
     if (b == NULL) {
-        b = (struct bitmap_t *)malloc(sizeof(struct bitmap_t)*size);
-        memset(b, 0, sizeof(struct bitmap_t)*size);
+        b = (struct bitmap_t *)malloc(sizeof(struct bitmap_t) * size);
+        memset(b, 0, sizeof(struct bitmap_t) * size);
     }
 
     if (depth > 1) {
