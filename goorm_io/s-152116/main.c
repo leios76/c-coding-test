@@ -3,8 +3,8 @@
 #include <stdint.h>
 #include <string.h>
 
-#define DEBUG_RUN
-#define DEBUG_OUTPUT
+//#define DEBUG_RUN
+//#define DEBUG_OUTPUT
 
 
 uint64_t bitmap1[2 * (1024 * 1024 + 262143) / 262144];
@@ -23,42 +23,18 @@ struct map_context_t {
     uint64_t cur_pos;
 };
 
-struct bitmap_t {
-    int level;
-    uint64_t bits;
-    struct bitmap_t * child;
-};
-
-struct bitmap_t * bitmap_head;
-
-void setbit_new(struct bitmap_t * b, uint64_t index)
+void setbit(int priority, int x, int y, int w_b, int h_b)
 {
-    int byte_index = (index >> (b->level + 6)) / 64;
-    int bit_index = (index >> (b->level + 6)) % 64;
-    printf("byte index: %ld, bit index: %ld\n", byte_index, bit_index);
-    b[byte_index].bits |= (1ULL << bit_index);
-#ifdef DEBUG_OUTPUT
-    printf("set bitmap[%d] index %ld, mask(%02ld) 0x%016llX\n", b->level, byte_index, bit_index, (1ULL << bit_index));
-#endif
-    if (b->level > 0) {
-        setbit_new(b[byte_index].child, index);
-    }
-}
-
-void setbit(struct bitmap_t * b, uint64_t index)
-{
-    //uint64_t index = (priority << (height_shift + width_shift)) | (y << width_shift) | x;
+    uint64_t index = (priority << (w_b + h_b)) | (y << h_b) | x;
     bitmap1[index / 262144] |= (1ULL << ((index / 4096) % 64));
     bitmap2[index / 4096] |= (1ULL << ((index / 64) % 64));
     bitmap3[index / 64] |= (1ULL << (index % 64));
 
 #ifdef DEBUG_OUTPUT
-    printf("set bitmap1 index %ld, mask(%02ld) 0x%016llX\n", index / 262144, ((index / 4096) % 64), (1ULL << ((index / 4096) % 64)));
-    printf("set bitmap2 index %ld, mask(%02ld) 0x%016llX\n", index / 4096, ((index / 64) % 64), (1ULL << ((index / 64) % 64)));
-    printf("set bitmap3 index %ld, mask(%02ld) 0x%016llX\n", index / 64, (index % 64), (1ULL << (index % 64)));
+    printf("set bitmap1 index %ld, mask(%ld) 0x%016llX\n", index / 262144, ((index / 4096) % 64), (1ULL << ((index / 4096) % 64)));
+    printf("set bitmap2 index %ld, mask(%ld) 0x%016llX\n", index / 4096, ((index / 64) % 64), (1ULL << ((index / 64) % 64)));
+    printf("set bitmap3 index %ld, mask(%ld) 0x%016llX\n", index / 64, (index % 64), (1ULL << (index % 64)));
 #endif
-
-    setbit_new(b, index);
 }
 
 uint64_t get_index(int w_b, int h_b)
@@ -79,13 +55,13 @@ uint64_t get_index(int w_b, int h_b)
         for (k_b = 0; k_b < 64; k_b++) {
             if (bitmap1[k] & (1ULL << k_b)) {
 #ifdef DEBUG_OUTPUT
-                printf("get bitmap1 index %d, mask(%02d) 0x%016llX\n", k, k_b, (1ULL << k_b));
+                printf("get bitmap1 index %d, mask(%d) 0x%016llX\n", k, k_b, (1ULL << k_b));
 #endif
                 for (j_b = 0; j_b < 64; j_b++) {
                     j = k * 64 + k_b;
                     if (bitmap2[j] & (1ULL << j_b)) {
 #ifdef DEBUG_OUTPUT
-                        printf("get bitmap2 index %d, mask(%02d) 0x%016llX\n", j, j_b, (1ULL << j_b));
+                        printf("get bitmap2 index %d, mask(%d) 0x%016llX\n", j, j_b, (1ULL << j_b));
 #endif
                         i = (k * 64 + k_b) * 64 + j_b;
                         for (i_b = 0; i_b < 64; i_b++) {
@@ -169,13 +145,13 @@ void build_debug_spec(struct map_context_t * context)
     h_line_count = 4;
 
     for (context->height_shift = 0; context->height_shift < 32; context->height_shift++) {
-        if (w_line_count + 996 <= (1 << context->height_shift)) {
+        if (w_line_count <= (1 << context->height_shift)) {
             context->height = (1 << context->height_shift);
             break;
         }
     }
     for (context->width_shift = 0; context->width_shift < 32; context->width_shift++) {
-        if (h_line_count + 996 <= (1 << context->width_shift)) {
+        if (h_line_count <= (1 << context->width_shift)) {
             context->width = (1 << context->width_shift);
             break;
         }
@@ -187,13 +163,13 @@ void build_debug_spec(struct map_context_t * context)
     for (y = 0; y < w_line_count; y++) {
         memset(line, 0, sizeof(line));
         switch (y) {
-        case 0:
+            case 0:
             strcpy(line, "P000"); break;
-        case 1:
+            case 1:
             strcpy(line, "PPPP"); break;
-        case 2:
+            case 2:
             strcpy(line, "000S"); break;
-        case 3:
+            case 3:
             strcpy(line, "0EP0"); break;
         }
         for (x = 0; x < h_line_count; x++) {
@@ -268,22 +244,6 @@ void build_spec(struct map_context_t * context)
     }
 }
 
-struct bitmap_t * init_bitmap(struct bitmap_t * b, int depth, int size)
-{
-    if (b == NULL) {
-        b = (struct bitmap_t *)malloc(sizeof(struct bitmap_t) * size);
-        memset(b, 0, sizeof(struct bitmap_t) * size);
-    }
-
-    if (depth > 1) {
-        for (int i = 0; i < size; i++) {
-            b[i].child = init_bitmap(b[i].child, depth - 1, 64);
-            b[i].level = b[i].child->level + 6;
-        }
-    }
-    return b;
-}
-
 int main()
 {
     int candidate_x_diffs[4] = { -1, 0, 0, 1 };
@@ -306,21 +266,6 @@ int main()
 #else
     build_spec(&context);
 #endif
-
-    int size;
-    int depth;
-    size = context.width_shift + context.height_shift + 1;
-    for (depth = 0; depth < 10; depth++) {
-        if (size > 12) {
-            size = size - 6;
-        } else {
-            printf("%dx%d map need %d depth, first bit size: %d(%d)\n", context.width, context.height, depth, ((1 << size) + 63) >> 6, size);
-            break;
-        }
-    }
-
-    bitmap_head = init_bitmap(NULL, depth, ((1 << size) + 63) >> 6);
-
     memset(bitmap1, 0, sizeof(bitmap1));
     memset(bitmap2, 0, sizeof(bitmap2));
     memset(bitmap3, 0, sizeof(bitmap3));
@@ -365,7 +310,7 @@ int main()
             // priority에 0x10을 마스킹하여 다시 후보로 등록되지 않도록 한다.
             context.priority_map[index] |= 0x80;
 
-            setbit(bitmap_head, ((uint64_t)priority << (context.height_shift + context.width_shift)) | index);
+            setbit(priority, x, y, context.height_shift, context.width_shift);
         }
 
 #ifdef DEBUG_OUTPUT
@@ -409,3 +354,4 @@ int main()
     printf("%d\n", total_danger);
     return 0;
 }
+
