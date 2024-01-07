@@ -57,11 +57,14 @@ int al(int m, int n, int s, int r, int c)
 
     return b + 1;
 }
-int main(int q, char ** x) {
-    int m,n,s,r,c;
+int main(int q, char ** x)
+{
+    int m, n, s, r, c;
     while (1) {
         scanf("%d %d %d", &m, &n, &s);
-        if (!m && !n && !s) { break; }
+        if (!m && !n && !s) {
+            break;
+        }
 
         for (int i = 0; i < s; i++) {
             scanf("%d %d", &r, &c);

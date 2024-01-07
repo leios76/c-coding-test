@@ -163,13 +163,13 @@ void build_debug_spec(struct map_context_t * context)
     for (y = 0; y < w_line_count; y++) {
         memset(line, 0, sizeof(line));
         switch (y) {
-            case 0:
+        case 0:
             strcpy(line, "P000"); break;
-            case 1:
+        case 1:
             strcpy(line, "PPPP"); break;
-            case 2:
+        case 2:
             strcpy(line, "000S"); break;
-            case 3:
+        case 3:
             strcpy(line, "0EP0"); break;
         }
         for (x = 0; x < h_line_count; x++) {

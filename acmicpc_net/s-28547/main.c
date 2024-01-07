@@ -37,7 +37,7 @@ int main(int q, char **x)
 #endif
 
     int length = strlen(line);
-    for (int i = 0; i < length/2; i++) {
+    for (int i = 0; i < length / 2; i++) {
         words[word_index].length++;
 #ifdef DEBUG_OUTPUT
         {

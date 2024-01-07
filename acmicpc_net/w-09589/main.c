@@ -42,7 +42,6 @@ int mix_color(char * a, char * b)
 int check_available(int depth, int index)
 {
     for (int i = 0; i < c_colors[depth].colors_count; i++) {
-
     }
 }
 
