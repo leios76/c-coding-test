@@ -2,14 +2,7 @@
 #include <string.h>
 #include <stdint.h>
 
-//#define DEBUG_OUTPUT
-//#define DEBUG_RUN
 //#define RANDUM_RUN
-
-#ifdef DEBUG_RUN
-int debug_monster_count = 5;
-int debug_health_input[] = { 8, 1, 3, 3, 8 };
-#endif
 
 #ifdef RANDUM_RUN
 int max_monster_count = 10000;
@@ -64,15 +57,8 @@ int main()
     srand(time(NULL));
     total_monster_count = rand() % max_monster_count + 1;
 #else
-#ifdef DEBUG_RUN
-    total_monster_count = debug_monster_count;
-#else
     scanf("%d", &total_monster_count);
 #endif
-#endif
-    if (total_monster_count < 1 || total_monster_count > 100000) {
-        return 0;
-    }
 
     for (int i = 0; i < total_monster_count; i++) {
         monster_pool[i].index = i;
@@ -80,11 +66,7 @@ int main()
 #ifdef RANDUM_RUN
         monster_pool[i].health = rand() % (max_monster_health) + 1;
 #else
-#ifdef DEBUG_RUN
-        monster_pool[i].health = debug_health_input[i];
-#else
         scanf("%d", &monster_pool[i].health);
-#endif
 #endif
         table_index = monster_pool[i].health >> CLUSTER_SIZE;
 
