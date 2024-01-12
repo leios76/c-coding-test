@@ -11,14 +11,15 @@ struct color_combi_info_t {
 
 struct color_t {
     char color[128];
+    int index;
     float cert;
 };
 struct c_color_t {
-    struct color_t colors[200];
+    struct color_t colors[300];
     int colors_count;
 };
 
-char color_table[200][128];
+char color_table[300][128];
 int color_table_count = 0;
 
 struct color_combi_info_t combination_table[100];
@@ -26,6 +27,24 @@ int combination_table_count = 0;
 
 struct c_color_t c_colors[500];
 int c_colors_count = 0;
+
+int c_color_case[500];
+
+int add_color_table(char * c)
+{
+    strcpy(color_table[color_table_count++], c);
+    return color_table_count;
+}
+
+int find_color_table(char * c)
+{
+    for (int i = 0; i < color_table_count; i++) {
+        if (strcmp(c, color_table[i]) == 0) {
+            return i;
+        }
+    }
+    return add_color_table(c);
+}
 
 int mix_color(char * a, char * b)
 {
@@ -39,27 +58,6 @@ int mix_color(char * a, char * b)
     return -1;
 }
 
-int check_available(int depth, int index)
-{
-    for (int i = 0; i < c_colors[depth].colors_count; i++) {
-    }
-}
-
-int find_color_table(char * c)
-{
-    for (int i = 0; i < color_table_count; i++) {
-        if (strcmp(c, color_table[i]) == 0) {
-            return i;
-        }
-    }
-    return add_color_table(c);
-}
-
-int add_color_table(char * c)
-{
-    strcpy(color_table[color_table_count++], c);
-    return color_table_count;
-}
 
 int main(int q, char **x)
 {
@@ -92,7 +90,9 @@ int main(int q, char **x)
 
         combination_table[combination_table_count].input_mask = (1ULL << color_index1) | (1ULL << color_index2);
         combination_table[combination_table_count].output_index = color_index3;
-        printf("0x%08X -> %d\n", combination_table[combination_table_count].input_mask, combination_table[combination_table_count].output_index);
+#ifdef DEBUG_OUTPUT
+        printf("0x%08lX -> %d\n", combination_table[combination_table_count].input_mask, combination_table[combination_table_count].output_index);
+#endif
     }
 
     scanf("%d", &t);
@@ -106,11 +106,16 @@ int main(int q, char **x)
                     break;
                 } else {
                     scanf("%f", &c_colors[j].colors[c_colors[j].colors_count].cert);
-                    printf("%s %f\n", c_colors[j].colors[c_colors[j].colors_count].color, c_colors[j].colors[c_colors[j].colors_count].cert);
+                    c_colors[j].colors[c_colors[j].colors_count].index = find_color_table(c_colors[j].colors[c_colors[j].colors_count].color);
+#ifdef DEBUG_OUTPUT
+                    printf("%s %d %f\n", c_colors[j].colors[c_colors[j].colors_count].color, c_colors[j].colors[c_colors[j].colors_count].index, c_colors[j].colors[c_colors[j].colors_count].cert);
+#endif
                     c_colors[j].colors_count++;
                 }
             }
         }
+
     }
+
     return 0;
 }
