@@ -5,7 +5,7 @@
 #include <time.h>
 
 int max_n = 2000;
-int max_k = 15;
+int max_k = 20;
 
 int main()
 {
