@@ -1,1 +1,1 @@
-SUBMAKEFILES := $(wildcard w-*/target.mk)
+SUBMAKEFILES := $(wildcard w-*/*/target.mk)
