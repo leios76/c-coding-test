@@ -3,8 +3,10 @@
 #include <stdint.h>
 #include <stdlib.h>
 
+#define SECTOR_SIZE     16
+
 struct stage_t {
-    int * area[2048 * 2048];
+    int area[2048 * 2048];
     int edge_list[2048 * 2048];
     int edge_count;
 };
@@ -12,61 +14,46 @@ struct stage_t {
 struct context_t {
     int n;
     int k;
-    uint64_t bitmap[2048 * 2048 / 64];
-    int culture_x[100000];
-    int culture_y[100000];
     int culture_count;
 
     struct stage_t stages[2];
-    int culture_id[100000];
+    int culture_id[100001];
 
     int curr_stage_index;
     int next_stage_index;
 };
 
-int find_culture(struct context_t * context, int a)
+struct context_t verify_context;
+
+int findParent(struct context_t * context, int x)
 {
-    if (context->culture_id[a] == a) {
-        return a;
+    if (context->culture_id[x] == x) {
+        return x;
     }
-    context->culture_id[a] = find_culture(context, context->culture_id[a]);
-    return context->culture_id[a];
-}
-
-int union_culture(struct context_t * context, int a, int b)
-{
-    a = find_culture(context, a);
-    b = find_culture(context, b);
-
-    context->culture_id[b] = a;
+    context->culture_id[x] = findParent(context, context->culture_id[x]);
+    return context->culture_id[x];
 }
 
 int check_culture(struct context_t * context, int src, int dest) {
     struct stage_t * curr = &context->stages[context->curr_stage_index];
     struct stage_t * next = &context->stages[context->next_stage_index];
+    int root_src;
+    int root_dest;
     if (next->area[dest] != 0) {
-        if (*next->area[dest] != *curr->area[src]) {
-            if (*next->area[dest] < *curr->area[src]) {
+        root_src = findParent(context, curr->area[src]);
+        root_dest = findParent(context, next->area[dest]);
+        if (root_dest != root_src) {
+            if (root_dest < root_src) {
 #ifdef DEBUG_OUTPUT
-                printf("(%d,%d %d) (%d,%d %d) culture %d is combined\n", src % 2048, src / 2048, *curr->area[src], dest % 2048, dest / 2048, *next->area[dest], *curr->area[src]);
+                printf("(%d,%d %d) (%d,%d %d) culture %d is combined\n", src % 2048, src / 2048, root_src, dest % 2048, dest / 2048, root_dest, root_src);
 #endif
-                int temp = *curr->area[src];
-                for (int i = 0; i < context->culture_count; i++) {
-                    if (context->culture_id[i] == temp) {
-                        context->culture_id[i] = *next->area[dest];
-                    }
-                }
+                context->culture_id[root_src] = root_dest;
                 return 1;
             } else {
 #ifdef DEBUG_OUTPUT
-                printf("(%d,%d %d) (%d,%d %d) culture %d is combined\n", src % 2048, src / 2048, *curr->area[src], dest % 2048, dest / 2048, *next->area[dest], *next->area[dest]);
+                printf("(%d,%d %d) (%d,%d %d) culture %d is combined\n", src % 2048, src / 2048, root_src, dest % 2048, dest / 2048, root_dest, root_dest);
 #endif
-                int temp = *next->area[dest];
-                for (int i = 0; i < context->culture_count; i++) {
-                    if (context->culture_id[i] == temp) {
-                        context->culture_id[i] = *curr->area[src];
-                    }
-                }
+                context->culture_id[root_dest] = root_src;
                 return 1;
             }
         }
@@ -74,11 +61,10 @@ int check_culture(struct context_t * context, int src, int dest) {
     return 0;
 }
 
-int spread_culture(struct context_t * context, struct stage_t * curr, struct stage_t * next, int x, int y)
+int spread_culture(struct context_t * context, int x, int y)
 {
     int count = 0;
     int src = y*2048 + x;
-    int dest;
     if (x > 0) {
         if (check_culture(context, src, src - 1)) {
             count++;
@@ -114,11 +100,9 @@ int fill_culture(struct context_t * context, int src, int dest) {
     return 0;
 }
 
-void fill_around(struct context_t * context, struct stage_t * curr, struct stage_t * next, int x, int y)
+void fill_around(struct context_t * context, int x, int y)
 {
-    int count = 0;
     int src = y*2048 + x;
-    int dest;
     if (x > 0) {
         fill_culture(context, src, src - 1);
     }
@@ -162,7 +146,7 @@ int verify(struct context_t * context)
 #endif
 #endif
         for (int j = 0; j < context->stages[context->curr_stage_index].edge_count; j++) {
-            context->k -= spread_culture(context, &context->stages[context->curr_stage_index], &context->stages[context->next_stage_index], context->stages[context->curr_stage_index].edge_list[j] % 2048, context->stages[context->curr_stage_index].edge_list[j] / 2048);
+            context->k -= spread_culture(context, context->stages[context->curr_stage_index].edge_list[j] % 2048, context->stages[context->curr_stage_index].edge_list[j] / 2048);
         }
 
         if (context->k == 1) {
@@ -170,7 +154,7 @@ int verify(struct context_t * context)
         }
 
         for (int j = 0; j < context->stages[context->curr_stage_index].edge_count; j++) {
-            fill_around(context, &context->stages[context->curr_stage_index], &context->stages[context->next_stage_index], context->stages[context->curr_stage_index].edge_list[j] % 2048, context->stages[context->curr_stage_index].edge_list[j] / 2048);
+            fill_around(context, context->stages[context->curr_stage_index].edge_list[j] % 2048, context->stages[context->curr_stage_index].edge_list[j] / 2048);
         }
 
         context->curr_stage_index = (context->curr_stage_index + 1) % 2;
@@ -193,4 +177,43 @@ int verify(struct context_t * context)
 #endif
 #endif
     return turn;
+}
+
+int main()
+{
+    int x;
+    int y;
+
+    memset(&verify_context, 0, sizeof(verify_context));
+
+    scanf("%d %d", &verify_context.n, &verify_context.k);
+#ifdef DEBUG_OUTPUT
+    printf("%d %d\n", verify_context.n, verify_context.k);
+#endif
+    verify_context.culture_count = verify_context.k;
+    verify_context.curr_stage_index = 0;
+    verify_context.next_stage_index = 1;
+
+    for (int i = 1; i <= verify_context.culture_count; i++) {
+        int ix;
+        int iy;
+        scanf("%d %d", &ix, &iy);
+        x = ix - 1;
+        y = iy - 1;
+#ifdef DEBUG_OUTPUT
+        printf("%d %d, %d %d\n", x, y, (x)/64, (y)/64);
+#endif
+
+        verify_context.culture_id[i] = i;
+        if (verify_context.stages[0].area[(y) * 2048 + (x)] != 0) {
+            verify_context.k--;
+        }
+        verify_context.stages[0].area[(y) * 2048 + (x)] = i;
+        verify_context.stages[0].edge_list[verify_context.stages[0].edge_count++] = (y) * 2048 + (x);
+    }
+
+    int verify_output = verify(&verify_context);
+
+    printf("%d\n", verify_output);
+    return 0;
 }
