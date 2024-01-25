@@ -34,12 +34,12 @@ void print_board(struct context_t * ctx, int range)
         for (int r = 0; r < ctx->r; r++) {
             for (int c = 0; c < ctx->c; c++) {
                 switch (ctx->area[r * 1024 + c]) {
-                    case 0xFFFFFFF:
-                        target_r = r;
-                        target_c = c;
-                        r = ctx->r;
-                        c = ctx->c;
-                        break;
+                case 0xFFFFFFF:
+                    target_r = r;
+                    target_c = c;
+                    r = ctx->r;
+                    c = ctx->c;
+                    break;
                 }
             }
         }
@@ -56,18 +56,18 @@ void print_board(struct context_t * ctx, int range)
                 continue;
             }
             switch (ctx->area[(target_r + r) * 1024 + (target_c + c)]) {
-                case 0xFFFFFFF:
-                    printf("&");
-                    break;
-                case -1:
-                    printf(".");
-                    break;
-                case -1000:
-                    printf("#");
-                    break;
-                default:
-                    printf("%d", ctx->area[(target_r + r) * 1024 + (target_c + c)]);
-                    break;
+            case 0xFFFFFFF:
+                printf("&");
+                break;
+            case -1:
+                printf(".");
+                break;
+            case -1000:
+                printf("#");
+                break;
+            default:
+                printf("%d", ctx->area[(target_r + r) * 1024 + (target_c + c)]);
+                break;
             }
         }
         printf("\n");
@@ -102,7 +102,7 @@ void push_queue(struct queue_t * queue, int value)
         queue->read_index = 0;
         queue->written_index = queue->queue_size - 1;
 #ifdef DEBUG_OUTPUT
-        printf("increase queue size: %d -> %d\n", queue->queue_size, queue->queue_size*2);
+        printf("increase queue size: %d -> %d\n", queue->queue_size, queue->queue_size * 2);
 #endif
         queue->queue_size = queue->queue_size * 2;
         queue->data = temp;
@@ -114,9 +114,9 @@ void push_queue(struct queue_t * queue, int value)
 
 int solve(struct context_t * ctx)
 {
-    int diff[4] = {-1, 1, -1024, 1024};
-    int diff_c[4] = {-1, 1, 0, 0};
-    int diff_r[4] = {0, 0, -1, 1};
+    int diff[4] = { -1, 1, -1024, 1024 };
+    int diff_c[4] = { -1, 1, 0, 0 };
+    int diff_r[4] = { 0, 0, -1, 1 };
     struct queue_t * queue = &ctx->queue;
     while (queue->read_index != queue->written_index) {
         queue->turn_index = queue->written_index;
@@ -143,15 +143,16 @@ int solve(struct context_t * ctx)
                 //printf(" %d dir(%d) %d\n", coord + diff[i], diff[i], ctx->area[coord + diff[i]]);
 #endif
                 switch (ctx->area[coord + diff[i]]) {
-                    case 0xFFFFFFF:
-                        return ctx->turn;
-                    case -1:
+                case 0xFFFFFFF:
+                    return ctx->turn;
+
+                case -1:
 #ifdef DEBUG_OUTPUT
-                        //printf(" ==> add %d,%d (%d) (r%d w%d)\n", nc, nr, ctx->turn + 1, ctx->queue.read_index, ctx->queue.written_index);
+                    //printf(" ==> add %d,%d (%d) (r%d w%d)\n", nc, nr, ctx->turn + 1, ctx->queue.read_index, ctx->queue.written_index);
 #endif
-                        ctx->area[coord + diff[i]] = ctx->turn + 1;
-                        push_queue(queue, coord + diff[i]);
-                        break;
+                    ctx->area[coord + diff[i]] = ctx->turn + 1;
+                    push_queue(queue, coord + diff[i]);
+                    break;
                 }
             }
         }
@@ -174,19 +175,19 @@ void init_data(struct context_t * ctx)
         for (int c = 0; c < ctx->c; c++) {
             int coord = r * 1024 + c;
             switch (line[c]) {
-                case '.':
-                    ctx->area[coord] = -1;
-                    break;
-                case '#':
-                    ctx->area[coord] = -1000;
-                    break;
-                case '&':
-                    ctx->area[coord] = 0xFFFFFFF;
-                    break;
-                case '@':
-                    ctx->area[coord] = 0;
-                    push_queue(&ctx->queue, coord);
-                    break;
+            case '.':
+                ctx->area[coord] = -1;
+                break;
+            case '#':
+                ctx->area[coord] = -1000;
+                break;
+            case '&':
+                ctx->area[coord] = 0xFFFFFFF;
+                break;
+            case '@':
+                ctx->area[coord] = 0;
+                push_queue(&ctx->queue, coord);
+                break;
             }
         }
     }

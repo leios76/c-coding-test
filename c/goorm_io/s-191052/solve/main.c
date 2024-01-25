@@ -56,18 +56,18 @@ int solve(struct context_t * c)
         int dx = 0;
         int dy = 0;
         switch (c->command[i - 1]) {
-            case 'R':
-                dx = 1;
-                break;
-            case 'U':
-                dy = -1;
-                break;
-            case 'D':
-                dy = 1;
-                break;
-            case 'L':
-                dx = -1;
-                break;
+        case 'R':
+            dx = 1;
+            break;
+        case 'U':
+            dy = -1;
+            break;
+        case 'D':
+            dy = 1;
+            break;
+        case 'L':
+            dx = -1;
+            break;
         }
         index = find_index(c, x + dx, y + dy);
 #ifdef DEBUG_OUTPUT

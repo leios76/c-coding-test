@@ -59,9 +59,9 @@ void push_queue(struct dynamic_queue_t * queue, int value)
 
 int solve(struct context_t * ctx)
 {
-    int diff[4] = {-1, 1, -1024, 1024};
-    int diff_c[4] = {-1, 1, 0, 0};
-    int diff_r[4] = {0, 0, -1, 1};
+    int diff[4] = { -1, 1, -1024, 1024 };
+    int diff_c[4] = { -1, 1, 0, 0 };
+    int diff_r[4] = { 0, 0, -1, 1 };
     struct dynamic_queue_t * queue = &ctx->queue;
     while (queue->read_index != queue->written_index) {
         queue->turn_index = queue->written_index;
@@ -77,12 +77,13 @@ int solve(struct context_t * ctx)
                     continue;
                 }
                 switch (ctx->area[coord + diff[i]]) {
-                    case -3:
-                        return ctx->turn;
-                    case -1:
-                        ctx->area[coord + diff[i]] = ctx->turn + 1;
-                        push_queue(queue, coord + diff[i]);
-                        break;
+                case -3:
+                    return ctx->turn;
+
+                case -1:
+                    ctx->area[coord + diff[i]] = ctx->turn + 1;
+                    push_queue(queue, coord + diff[i]);
+                    break;
                 }
             }
         }
@@ -102,18 +103,18 @@ void init_data(struct context_t * ctx)
         for (int c = 0; c < ctx->c; c++) {
             int coord = r * 1024 + c;
             switch (line[c]) {
-                case '.':
-                    ctx->area[coord] = -1;
-                    break;
-                case '#':
-                    ctx->area[coord] = -2;
-                    break;
-                case '&':
-                    ctx->area[coord] = -3;
-                    break;
-                case '@':
-                    push_queue(&ctx->queue, coord);
-                    break;
+            case '.':
+                ctx->area[coord] = -1;
+                break;
+            case '#':
+                ctx->area[coord] = -2;
+                break;
+            case '&':
+                ctx->area[coord] = -3;
+                break;
+            case '@':
+                push_queue(&ctx->queue, coord);
+                break;
             }
         }
     }

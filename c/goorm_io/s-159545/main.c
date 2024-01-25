@@ -41,15 +41,15 @@ int main()
             for (int j = 0; j < 64; j++) {
                 if ((compare & (1ULL << j)) && (p_bitmap[i] & (1ULL << j))) {
 #ifdef DEBUG_OUTPUT
-                    printf("%d\n", i*64 + j);
+                    printf("%d\n", i * 64 + j);
 #endif
-                    sum += i*64 + j;
+                    sum += i * 64 + j;
                 }
                 if ((compare & (1ULL << j)) && (n_bitmap[i] & (1ULL << j))) {
 #ifdef DEBUG_OUTPUT
-                    printf("%d\n", i*64 + j);
+                    printf("%d\n", i * 64 + j);
 #endif
-                    sum -= i*64 + j;
+                    sum -= i * 64 + j;
                 }
             }
         }

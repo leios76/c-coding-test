@@ -17,7 +17,7 @@ int main()
             scanf("%d", &c);
             for (int j = 0; j < c; j++) {
                 scanf("%d", &k);
-                score[m] += (1 << ((k-1)*8));
+                score[m] += (1 << ((k - 1) * 8));
             }
         }
         if (score[0] > score[1]) {

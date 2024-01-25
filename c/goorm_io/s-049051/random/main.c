@@ -75,18 +75,18 @@ int main()
     for (int j = 0; j < r; j++) {
         for (int i = 0; i < c; i++) {
             switch (area[j][i]) {
-                case 0:
-                    printf(".");
-                    break;
-                case 1:
-                    printf("#");
-                    break;
-                case 2:
-                    printf("@");
-                    break;
-                case 3:
-                    printf("&");
-                    break;
+            case 0:
+                printf(".");
+                break;
+            case 1:
+                printf("#");
+                break;
+            case 2:
+                printf("@");
+                break;
+            case 3:
+                printf("&");
+                break;
             }
         }
         printf("\n");

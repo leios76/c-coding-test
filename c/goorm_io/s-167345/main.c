@@ -27,7 +27,6 @@ int get_around(int x, int y, int n)
 
 int process_value(int n)
 {
-
 }
 
 int main()

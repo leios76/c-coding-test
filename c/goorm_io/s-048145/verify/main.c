@@ -30,14 +30,15 @@ int findParent(struct context_t * c, int x)
     return c->culture_id[x];
 }
 
-int check_culture(struct context_t * c, int src, int dest) {
+int check_culture(struct context_t * c, int src, int dest)
+{
     if (c->area[dest] != 0) {
         int root_src = findParent(c, c->area[src]);
         int root_dest = findParent(c, c->area[dest]);
         if (root_dest < root_src) {
             c->culture_id[root_src] = root_dest;
             return 1;
-        } else if (root_dest > root_src){
+        } else if (root_dest > root_src) {
             c->culture_id[root_dest] = root_src;
             return 1;
         }
@@ -73,7 +74,8 @@ int combine_culture(struct context_t * c, int x, int y)
     return count;
 }
 
-int fill_culture(struct context_t * c, int src, int dest) {
+int fill_culture(struct context_t * c, int src, int dest)
+{
     struct stage_t * next = &c->stages[(c->turn + 1) % 2];
 
     if (c->area[dest] == 0) {

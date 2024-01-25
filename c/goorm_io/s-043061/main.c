@@ -29,7 +29,7 @@ int main()
 
     for (int i = 0; i < n; i++) {
         int inc = 1;
-        for (int j = 0; j < i ; j++) {
+        for (int j = 0; j < i; j++) {
             inc = inc * (max_value[j]);
         }
         inc_value[i] = inc;

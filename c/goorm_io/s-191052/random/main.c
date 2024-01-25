@@ -21,18 +21,18 @@ int main()
     for (int i = 0; i < n; i++) {
         d = (rand() % 4);
         switch (d) {
-            case 0:
-                printf("L");
-                break;
-            case 1:
-                printf("R");
-                break;
-            case 2:
-                printf("U");
-                break;
-            case 3:
-                printf("D");
-                break;
+        case 0:
+            printf("L");
+            break;
+        case 1:
+            printf("R");
+            break;
+        case 2:
+            printf("U");
+            break;
+        case 3:
+            printf("D");
+            break;
         }
     }
     printf("\n");
