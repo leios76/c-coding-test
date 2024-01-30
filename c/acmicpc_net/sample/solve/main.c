@@ -3,6 +3,12 @@
 #include <stdint.h>
 #include <stdlib.h>
 
+#ifdef DEBUG_OUTPUT
+    #define debug(...)  printf(__VA_ARGS__)
+#else
+    #define debug(...)
+#endif
+
 struct context_t {
     int n;
 };
