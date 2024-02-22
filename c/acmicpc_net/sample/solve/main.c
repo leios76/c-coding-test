@@ -29,9 +29,9 @@ void init_data(struct context_t * ctx)
 
 int main(int argc, char ** argv)
 {
-    int t;
+    int t = 1;
 
-    scanf("%d", &t);
+    //scanf("%d", &t);
     for (int i = 0; i < t; i++) {
         init_data(&context);
         solve(&context);
