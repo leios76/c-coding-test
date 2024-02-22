@@ -14,22 +14,27 @@ struct context_t {
 };
 struct context_t context;
 
-int solve(struct context_t * ctx)
+void solve(struct context_t * ctx)
 {
-    return 0;
+    int result = 0;
+
+    printf("%d\n", result);
 }
 
 void init_data(struct context_t * ctx)
 {
     memset(ctx, 0, sizeof(struct context_t));
-
     scanf("%d", &ctx->n);
 }
 
-int main()
+int main(int argc, char ** argv)
 {
-    init_data(&context);
-    printf("%d\n", solve(&context));
+    int t;
 
+    scanf("%d", &t);
+    for (int i = 0; i < t; i++) {
+        init_data(&context);
+        solve(&context);
+    }
     return 0;
 }
