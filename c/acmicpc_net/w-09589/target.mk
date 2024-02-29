@@ -1,1 +1,0 @@
-SUBMAKEFILES := $(wildcard */target.mk)
