@@ -1,0 +1,174 @@
+# Uncrustify-0.66
+#
+# K&R (sort-of)
+#
+
+# The type of line endings. Default=Auto.
+newlines                        = lf     # auto/lf/crlf/cr
+
+# How to use tabs when indenting code
+# 0=spaces only
+# 1=indent with tabs to brace level, align with spaces (default)
+# 2=indent and align with tabs, using spaces when not on a tabstop
+indent_with_tabs                = 0        # unsigned number
+
+# The original size of tabs in the input. Default=8.
+input_tab_size                  = 8        # unsigned number
+
+# The size of tabs in the output (only used if align_with_tabs=true). Default=8.
+output_tab_size                 = 8        # unsigned number
+
+# The number of columns to indent per level.
+# Usually 2, 3, 4, or 8. Default=8.
+indent_columns                  = 4        # unsigned number
+
+# How to indent goto labels
+#   >0: absolute column where 1 is the leftmost column
+#  <=0: subtract from brace indent
+# Default=1
+indent_label                    = 2        # number
+
+# Whether to indent strings broken by '\' so that they line up.
+# indent_align_string             = false    # false/true
+
+# Spaces to indent '{' from level.
+# indent_brace                    = 0        # unsigned number
+
+# Add or remove newline between 'enum' and '{'.
+nl_enum_brace                   = remove   # ignore/add/remove/force
+
+# Add or remove newline between 'union' and '{'.
+nl_union_brace                  = remove   # ignore/add/remove/force
+
+# Add or remove newline between 'struct and '{'.
+nl_struct_brace                 = remove   # ignore/add/remove/force
+
+# Add or remove newline between 'do' and '{'.
+nl_do_brace                     = remove   # ignore/add/remove/force
+
+# Add or remove newline between 'if' and '{'.
+nl_if_brace                     = remove   # ignore/add/remove/force
+
+# Add or remove newline between 'for' and '{'.
+nl_for_brace                    = remove   # ignore/add/remove/force
+
+# Add or remove newline between 'else' and '{'.
+nl_else_brace                   = remove   # ignore/add/remove/force
+
+# Add or remove newline between 'while' and '{'.
+nl_while_brace                  = remove   # ignore/add/remove/force
+
+# Add or remove newline between 'switch' and '{'.
+nl_switch_brace                 = remove   # ignore/add/remove/force
+
+# The number of blank lines after a block of variable definitions at the top of a function body
+# 0 = No change (default).
+# nl_func_var_def_blk             = 0        # unsigned number
+
+# Whether to put a newline before 'case' statement, not after the first 'case'.
+# nl_before_case                  = false    # false/true
+
+# Add or remove newline between a function call's ')' and '{', as in:
+# list_for_each(item, &list) { }.
+nl_fcall_brace                  = add   # ignore/add/remove/force
+
+# Add or remove newline between function signature and '{'.
+nl_fdef_brace                   = add   # ignore/add/remove/force
+
+# Whether to put a blank line after 'return' statements, unless followed by a close brace.
+nl_after_return                 = TRUE    # false/true
+
+# Add or remove newline between '}' and 'while' of 'do' statement.
+nl_brace_while                  = remove   # ignore/add/remove/force
+
+# Add or remove newline between '}' and 'else'.
+nl_brace_else                   = remove   # ignore/add/remove/force
+
+# Whether to remove blanks after '#ifxx' and '#elxx', or before '#elxx' and '#endif'. Does not affect top-level #ifdefs.
+nl_squeeze_ifdef                = TRUE    # false/true
+
+# Add or remove newline between 'else' and 'if'.
+nl_else_if                      = remove   # ignore/add/remove/force
+
+
+#mod_paren_on_return		= add		# "return 1;" vs "return (1);"
+mod_full_brace_if		= add		# "if (a) a--;" vs "if (a) { a--; }"
+mod_full_brace_for		= add		# "for () a--;" vs "for () { a--; }"
+mod_full_brace_do		= add		# "do a--; while ();" vs "do { a--; } while ();"
+mod_full_brace_while		= add		# "while (a) a--;" vs "while (a) { a--; }"
+
+sp_before_semi			= remove
+sp_paren_paren			= remove	# space between (( and ))
+
+# Add or remove space between 'return' and '('.
+sp_return_paren                 = force   # ignore/add/remove/force
+
+# Add or remove space between 'sizeof' and '('.
+sp_sizeof_paren                 = remove   # ignore/add/remove/force
+
+# Add or remove space before '(' of 'if', 'for', 'switch', 'while', etc.
+sp_before_sparen                = force   # ignore/add/remove/force
+
+sp_after_sparen			= force		# "if () {" vs "if (){"
+sp_after_cast			= remove	# "(int) a" vs "(int)a"
+sp_inside_braces		= force		# "{ 1 }" vs "{1}"
+sp_inside_braces_struct		= force		# "{ 1 }" vs "{1}"
+sp_inside_braces_enum		= force		# "{ 1 }" vs "{1}"
+sp_inside_paren			= remove	# "( 1 )" vs "(1)"
+sp_inside_fparen		= remove        # "( 1 )" vs "(1)" - functions
+sp_inside_sparen		= remove        # "( 1 )" vs "(1)" - if/for/etc
+# sp_type_func			= ignore
+sp_assign			= force
+sp_arith			= force
+sp_bool				= force
+sp_compare			= force
+sp_after_comma			= force
+sp_func_def_paren		= remove	# "int foo (){" vs "int foo(){"
+sp_func_call_paren		= remove	# "foo (" vs "foo("
+sp_func_proto_paren		= remove	# "int foo ();" vs "int foo();"
+
+# Add or remove space between 'else' and '{' if on the same line.
+sp_else_brace                   = force   # ignore/add/remove/force
+
+# Add or remove space between '}' and 'else' if on the same line.
+sp_brace_else                   = force   # ignore/add/remove/force
+
+sp_before_ptr_star = force
+sp_before_unnamed_ptr_star = force
+sp_between_ptr_star = remove
+#sp_after_ptr_star = remove
+
+
+
+# align_with_tabs			= FALSE		# use tabs to align
+# align_on_tabstop		= FALSE		# align on tabstops
+# align_enum_equ_span		= 4
+# align_nl_cont			= TRUE
+# align_var_def_span		= 2
+# align_var_def_inline		= TRUE
+# align_var_def_star		= TRUE
+# align_var_def_colon		= TRUE
+# align_assign_span		= 1
+# align_struct_init_span		= 3
+# align_var_struct_span		= 3
+# align_right_cmt_span		= 3
+# align_pp_define_span		= 3
+# align_pp_define_gap		= 4
+# align_number_right		= TRUE
+# align_typedef_span		= 5
+# align_typedef_gap		= 3
+
+
+# Whether to put a star on subsequent comment lines.
+# cmt_star_cont                   = false    # false/true
+
+# If False, disable all multi-line comment changes, including cmt_width. keyword substitution and leading chars.
+# Default=True.
+cmt_indent_multi                = false     # false/true
+
+
+# Whether to remove blank lines before '}'.
+eat_blanks_before_close_brace   = TRUE    # false/true
+
+# Whether to remove blank lines after '{'.
+eat_blanks_after_open_brace     = TRUE    # false/true

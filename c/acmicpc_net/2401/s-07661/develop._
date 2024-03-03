@@ -1,0 +1,236 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdint.h>
+#include <string.h>
+
+#define RANDOM_RUN
+
+#ifdef DEBUG_RUN
+int debug_mns[][3] = {
+    {10, 8, 3},
+    {40, 46, 3},
+    {0, 0, 0},
+};
+int debug_rc[][2] = {
+    {3, 3},
+    {7, 7},
+    {10, 2},
+    {38, 18},
+    {3, 39},
+    {35, 22},
+};
+int debug_mns_index = 0;
+int debug_rc_index = 0;
+#ifdef RANDOM_RUN
+int random_max_m_size = 1000;
+int random_max_n_size = 1000;
+int random_max_s_size = 1000;
+#endif
+#endif
+
+int shape_x[1000];
+int shape_y[1000];
+
+
+int logic0(int m, int n, int s, int r, int c)
+{
+    uint16_t max_bright = 0;
+    uint16_t brightness[1024 * 1024];
+    memset(brightness, 0xFF, sizeof(brightness));
+    for (int i = 0; i < s; i++) {
+#ifdef DEBUG_OUTPUT
+        printf("painting %d, %d (%d, %d)\n", shape_x[i], shape_y[i], n, m);
+#endif
+
+        for (int y = 0; y < m; y++) {
+            for (int x = 0; x < n; x++) {
+                int b;
+                if (abs(y - shape_y[i]) < abs(x - shape_x[i])) {
+                    b = abs(x - shape_x[i]);
+                } else {
+                    b = abs(y - shape_y[i]);
+                }
+                //printf("%d, %d : %d -> %d\n", x + 1, y + 1, brightness[y*n + x], b);
+                if (brightness[y * n + x] > b) {
+                    brightness[y * n + x] = b;
+                }
+            }
+        }
+    }
+    for (int y = 0; y < m; y++) {
+        for (int x = 0; x < n; x++) {
+            if (brightness[y * n + x] > max_bright) {
+                max_bright = brightness[y * n + x];
+            }
+        }
+    }
+    return max_bright + 1;
+}
+
+int logic1(int m, int n, int s, int r, int c)
+{
+    uint16_t max_bright = 0;
+
+    for (int y = 0; y < m; y++) {
+        for (int x = 0; x < n; x++) {
+            int min_b = 1024;
+            int b = 0;
+            for (int i = 0; i < s; i++) {
+                if (abs(shape_x[i] - x) > abs(shape_y[i] - y)) {
+                    b = abs(shape_x[i] - x);
+                } else {
+                    b = abs(shape_y[i] - y);
+                }
+                if (min_b > b) {
+                    min_b = b;
+                }
+            }
+            if (min_b > max_bright) {
+                max_bright = min_b;
+            }
+        }
+    }
+
+    return max_bright + 1;
+}
+
+uint64_t bitmap[1024 * 1024 / 64];
+int logic2(int m, int n, int s, int r, int c)
+{
+    uint16_t brightness = 0;
+    uint64_t line[1024 / 64];
+    uint64_t done_line[1024 / 64];
+
+    memset(bitmap, 0, sizeof(bitmap));
+
+    memset(done_line, 0, sizeof(done_line));
+    for (int x = 0; x < n; x++) {
+        done_line[x / 64] |= (1ULL << (x % 64));
+    }
+
+    for (brightness = 0; brightness < 1000; brightness++) {
+        int done1 = 1;
+        int done2 = 1;
+#ifdef DEBUG_OUTPUT
+        printf("process brightness %d\n", brightness);
+#endif
+        for (int i = 0; i < s; i++) {
+            memset(line, 0, sizeof(line));
+#ifdef DEBUG_OUTPUT
+            //printf("fill x %d~%d\n", shape_x[i] - brightness, shape_x[i] + brightness);
+#endif
+            for (int x = shape_x[i] - brightness; x <= shape_x[i] + brightness; x++) {
+                if (0 <= x && x < n) {
+                    line[x / 64] |= (1ULL << (x % 64));
+                }
+            }
+
+            for (int y = shape_y[i] - brightness; y <= shape_y[i] + brightness; y++) {
+                if (0 <= y && y < m) {
+                    for (int b = 0; b < 1024 / 64; b++) {
+                        bitmap[y * 16 + b] |= line[b];
+                    }
+                }
+            }
+            if (0 < shape_x[i] - brightness || shape_x[i] + brightness < n - 1 || 0 < shape_y[i] - brightness || shape_y[i] + brightness < m - 1) {
+                done1 = 0;
+            }
+        }
+
+#if 0
+        printf("[dd] %016lX\n", done_line[0]);
+        for (int y = 0; y < m; y++) {
+            printf("[%2d] %016lX\n", y, bitmap[y * 16]);
+        }
+#endif
+        for (int y = 0; y < m; y++) {
+            if (memcmp(done_line, &bitmap[y * 16], sizeof(done_line)) != 0) {
+                done2 = 0;
+            }
+        }
+
+        if (done1 == 1 || done2 == 1) {
+            break;
+        }
+    }
+
+    return brightness + 1;
+}
+
+int (*funcs[])(int m, int n, int s, int r, int c) = {
+    logic2, logic1, logic0
+};
+
+int main(int argc, char **argv)
+{
+    int m, n, s;
+    int r, c;
+
+#ifdef DEBUG_RUN
+#ifdef RANDOM_RUN
+    srand(time(NULL));
+#endif
+#endif
+    while (1) {
+#ifdef DEBUG_RUN
+#ifdef RANDOM_RUN
+        m = (rand() % random_max_m_size) + 1;
+        n = (rand() % random_max_n_size) + 1;
+        s = (rand() % random_max_s_size) + 3;
+#else
+        m = debug_mns[debug_mns_index][0];
+        n = debug_mns[debug_mns_index][1];
+        s = debug_mns[debug_mns_index][2];
+        debug_mns_index++;
+#endif
+#else
+        scanf("%d %d %d", &m, &n, &s);
+#endif
+        if (m == 0 && n == 0 && s == 0) {
+            break;
+        }
+
+#ifdef DEBUG_OUTPUT
+       printf("map %d, %d\n", n, m);
+#endif
+
+        for (int i = 0; i < s; i++) {
+#ifdef DEBUG_RUN
+#ifdef RANDOM_RUN
+            r = (rand() % m) + 1;
+            c = (rand() % n) + 1;
+#else
+            r = debug_rc[debug_rc_index][0];
+            c = debug_rc[debug_rc_index][1];
+            debug_rc_index++;
+#endif
+#else
+            scanf("%d %d", &r, &c);
+#endif
+            r--;
+            c--;
+
+            shape_x[i] = c;
+            shape_y[i] = r;
+
+#ifdef DEBUG_OUTPUT
+            printf("painting %d, %d\n", c, r);
+#endif
+        }
+
+        printf("%d\n", funcs[0](m, n, s, r, c));
+
+#ifdef DEBUG_RUN
+#ifdef DEBUG_OUTPUT
+        printf("(v) %d\n", funcs[1](m, n, s, r, c));
+#endif
+#endif
+
+#ifdef DEBUG_RUN
+#ifdef RANDOM_RUN
+        break;
+#endif
+#endif
+    }
+    return 0;
+}
