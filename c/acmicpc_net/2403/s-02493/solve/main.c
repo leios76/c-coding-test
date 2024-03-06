@@ -25,6 +25,33 @@ struct context_t {
 };
 struct context_t context;
 
+void remove_queue(struct context_t * ctx, int index)
+{
+    if (index == ctx->queue_tail_index) {
+        debug("update tail index: %d -> %d\n", ctx->queue_tail_index, ctx->queue_pool[index].prev_index);
+        ctx->queue_tail_index = ctx->queue_pool[index].prev_index;
+    }
+    if (index == ctx->queue_head_index) {
+        debug("update head index: %d -> %d\n", ctx->queue_head_index, ctx->queue_pool[index].next_index);
+        ctx->queue_head_index = ctx->queue_pool[index].next_index;
+    }
+
+    if (ctx->queue_pool[index].prev_index != -1) {
+        debug("update next index (%d): %d -> %d\n", ctx->queue_pool[index].prev_index, ctx->queue_pool[ctx->queue_pool[index].prev_index].next_index, ctx->queue_pool[index].next_index);
+        ctx->queue_pool[ctx->queue_pool[index].prev_index].next_index = ctx->queue_pool[index].next_index;
+    }
+    if (ctx->queue_pool[index].next_index != -1) {
+        debug("update prev index (%d): %d -> %d\n", ctx->queue_pool[index].next_index, ctx->queue_pool[ctx->queue_pool[index].next_index].prev_index, ctx->queue_pool[index].prev_index);
+        ctx->queue_pool[ctx->queue_pool[index].next_index].prev_index = ctx->queue_pool[index].prev_index;
+    }
+}
+
+void insert_queue(struct context_t * ctx, int after, int before, int index)
+{
+
+}
+
+
 void solve(struct context_t * ctx)
 {
     for (int n = 1; n < ctx->n; n++) {
@@ -34,24 +61,6 @@ void solve(struct context_t * ctx)
             int prev_index = ctx->queue_pool[index].prev_index;
             if (ctx->queue_pool[index].h < ctx->queue_pool[n].h) {
                 debug("remove %d(%d)\n", index, ctx->queue_pool[index].h);
-
-                if (index == ctx->queue_tail_index) {
-                    debug("update tail index: %d -> %d\n", ctx->queue_tail_index, ctx->queue_pool[index].prev_index);
-                    ctx->queue_tail_index = ctx->queue_pool[index].prev_index;
-                }
-                if (index == ctx->queue_head_index) {
-                    debug("update head index: %d -> %d\n", ctx->queue_head_index, ctx->queue_pool[index].next_index);
-                    ctx->queue_head_index = ctx->queue_pool[index].next_index;
-                }
-
-                if (ctx->queue_pool[index].prev_index != -1) {
-                    debug("update next index (%d): %d -> %d\n", ctx->queue_pool[index].prev_index, ctx->queue_pool[ctx->queue_pool[index].prev_index].next_index, ctx->queue_pool[index].next_index);
-                    ctx->queue_pool[ctx->queue_pool[index].prev_index].next_index = ctx->queue_pool[index].next_index;
-                }
-                if (ctx->queue_pool[index].next_index != -1) {
-                    debug("update prev index (%d): %d -> %d\n", ctx->queue_pool[index].next_index, ctx->queue_pool[ctx->queue_pool[index].next_index].prev_index, ctx->queue_pool[index].prev_index);
-                    ctx->queue_pool[ctx->queue_pool[index].next_index].prev_index = ctx->queue_pool[index].prev_index;
-                }
 
                 if (ctx->queue_head_index == -1 && ctx->queue_tail_index == -1) {
                     debug("add %d(%d)\n", n, ctx->queue_pool[n].h);
