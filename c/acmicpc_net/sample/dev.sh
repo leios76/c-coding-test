@@ -12,31 +12,32 @@ PROBLEM_NO=$(basename $(realpath .))
 
 LAST_INPUT_FILE=input1.txt
 
-inotifywait -m -e modify -e create *.txt solve/*.c verify/*.c random/*.c |
-    while read file_path file_event; do
-        EXT="${file_path##*.}"
+inotifywait -m -r -e modify -e create . |
+    while read file_path file_event file_name; do
+        FILE=${file_path}${file_name}
+        EXT="${FILE##*.}"
         case ${EXT} in
             c)
                 make clean && make -j8 debug
                 echo "====================================================="
                 echo " [*] RUN SOLVE APP"
                 echo "====================================================="
-                ../../output/${SITE}/${PROBLEM_NO}-solve < ${LAST_INPUT_FILE}
+                ../../output/${SITE}/${PROBLEM_NO}-solve < "${LAST_INPUT_FILE}"
                 echo "====================================================="
                 echo " [*] RUN VERIFY APP"
                 echo "====================================================="
-                ../../output/${SITE}/${PROBLEM_NO}-verify < ${LAST_INPUT_FILE}
+                ../../output/${SITE}/${PROBLEM_NO}-verify < "${LAST_INPUT_FILE}"
                 ;;
             txt)
-                LAST_INPUT_FILE=${file_path}
+                LAST_INPUT_FILE=${FILE}
                 echo "====================================================="
                 echo " [*] RUN SOLVE APP"
                 echo "====================================================="
-                ../../output/${SITE}/${PROBLEM_NO}-solve < ${file_path}
+                ../../output/${SITE}/${PROBLEM_NO}-solve < "${FILE}"
                 echo "====================================================="
                 echo " [*] RUN VERIFY APP"
                 echo "====================================================="
-                ../../output/${SITE}/${PROBLEM_NO}-verify < ${file_path}
+                ../../output/${SITE}/${PROBLEM_NO}-verify < "${FILE}"
                 ;;
         esac
     done
