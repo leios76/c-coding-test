@@ -25,10 +25,14 @@ inotifywait -m -r -e modify -e create . |
                 echo " [*] RUN ${PROBLEM_NO} SOLVE APP"
                 echo "====================================================="
                 /usr/bin/timeout 2 ${OUTPUT_PATH}/${SITE}/${PROBLEM_NO}-solve < "${BASE_PATH}/${LAST_INPUT_FILE}"
+                if [ $? -ne 0 ]
+                then
+                    echo "Timeout!"
+                fi
                 echo "====================================================="
                 echo " [*] RUN ${PROBLEM_NO} VERIFY APP"
                 echo "====================================================="
-                /usr/bin/timeout 2 ${OUTPUT_PATH}/${SITE}/${PROBLEM_NO}-verify < "${BASE_PATH}/${LAST_INPUT_FILE}"
+                ${OUTPUT_PATH}/${SITE}/${PROBLEM_NO}-verify < "${BASE_PATH}/${LAST_INPUT_FILE}"
                 ;;
             txt)
                 SITE=$(basename $(dirname $(realpath ${file_path})))
@@ -42,11 +46,14 @@ inotifywait -m -r -e modify -e create . |
                 echo " [*] RUN ${PROBLEM_NO} SOLVE APP"
                 echo "====================================================="
                 /usr/bin/timeout 2 ${OUTPUT_PATH}/${SITE}/${PROBLEM_NO}-solve < "${BASE_PATH}/${BASE_NAME}"
+                if [ $? -ne 0 ]
+                then
+                    echo "Timeout!"
+                fi
                 echo "====================================================="
                 echo " [*] RUN ${PROBLEM_NO} VERIFY APP"
                 echo "====================================================="
-                /usr/bin/timeout 2 ${OUTPUT_PATH}/${SITE}/${PROBLEM_NO}-verify < "${BASE_PATH}/${BASE_NAME}"
-
+                ${OUTPUT_PATH}/${SITE}/${PROBLEM_NO}-verify < "${BASE_PATH}/${BASE_NAME}"
                 ;;
         esac
     done

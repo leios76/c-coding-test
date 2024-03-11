@@ -23,9 +23,4 @@ fi
 echo "====================================================="
 echo " [*] RUN VERIFY APP"
 echo "====================================================="
-/usr/bin/timeout 2 ../../output/${SITE}/${PROBLEM_NO}-verify < ${INPUT_FILE}
-if [ $? -ne 0 ]
-then
-    echo "Timeout!"
-    exit 1
-fi
+../../output/${SITE}/${PROBLEM_NO}-verify < ${INPUT_FILE}
