@@ -18,23 +18,25 @@ struct queue_entity_t {
 
 struct queue_t {
     struct queue_entity_t queue_pool[20000];
-    int queue_head_index;
-    int queue_tail_index;
+    int queue_head_index[1];
+    int queue_tail_index[1];
+    int queue_size[1];
 };
 
-void remove_queue(struct queue_t * queue, int index)
+void remove_queue(struct queue_t * queue, int queue_index, int index)
 {
-    if (index == queue->queue_tail_index) {
+    queue->queue_size[queue_index]--;
+    if (index == queue->queue_tail_index[queue_index]) {
         #ifdef DEBUG_QUEUE
-        debug("update tail index: %d -> %d\n", queue->queue_tail_index, queue->queue_pool[index].prev_index);
+        debug("update tail index: %d -> %d\n", queue->queue_tail_index[queue_index], queue->queue_pool[index].prev_index);
         #endif
-        queue->queue_tail_index = queue->queue_pool[index].prev_index;
+        queue->queue_tail_index[queue_index] = queue->queue_pool[index].prev_index;
     }
-    if (index == queue->queue_head_index) {
+    if (index == queue->queue_head_index[queue_index]) {
         #ifdef DEBUG_QUEUE
-        debug("update head index: %d -> %d\n", queue->queue_head_index, queue->queue_pool[index].next_index);
+        debug("update head index: %d -> %d\n", queue->queue_head_index[queue_index], queue->queue_pool[index].next_index);
         #endif
-        queue->queue_head_index = queue->queue_pool[index].next_index;
+        queue->queue_head_index[queue_index] = queue->queue_pool[index].next_index;
     }
 
     if (queue->queue_pool[index].prev_index != -1) {
@@ -51,17 +53,18 @@ void remove_queue(struct queue_t * queue, int index)
     }
 }
 
-void insert_queue(struct queue_t * queue, int after, int before, int index)
+void insert_queue(struct queue_t * queue, int queue_index, int after, int before, int index)
 {
-    if (queue->queue_head_index == -1 && queue->queue_tail_index == -1) {
+    queue->queue_size[queue_index]++;
+    if (queue->queue_head_index[queue_index] == -1 && queue->queue_tail_index[queue_index] == -1) {
         #ifdef DEBUG_QUEUE
-        debug("update head index: %d -> %d\n", queue->queue_head_index, index);
+        debug("update head index: %d -> %d\n", queue->queue_head_index[queue_index], index);
         #endif
-        queue->queue_head_index = index;
+        queue->queue_head_index[queue_index] = index;
         #ifdef DEBUG_QUEUE
-        debug("update tail index: %d -> %d\n", queue->queue_tail_index, index);
+        debug("update tail index: %d -> %d\n", queue->queue_tail_index[queue_index], index);
         #endif
-        queue->queue_tail_index = index;
+        queue->queue_tail_index[queue_index] = index;
         queue->queue_pool[index].prev_index = -1;
         queue->queue_pool[index].next_index = -1;
     } else {
@@ -77,12 +80,12 @@ void insert_queue(struct queue_t * queue, int after, int before, int index)
             #ifdef DEBUG_QUEUE
             debug("update prev index (%d): %d -> %d\n", index, queue->queue_pool[after].prev_index, after);
             #endif
-            queue->queue_pool[index].prev_index = queue->queue_tail_index;
-            if (after == queue->queue_tail_index) {
+            queue->queue_pool[index].prev_index = queue->queue_tail_index[queue_index];
+            if (after == queue->queue_tail_index[queue_index]) {
                 #ifdef DEBUG_QUEUE
-                debug("update tail index: %d -> %d\n", queue->queue_tail_index, index);
+                debug("update tail index: %d -> %d\n", queue->queue_tail_index[queue_index], index);
                 #endif
-                queue->queue_tail_index = index;
+                queue->queue_tail_index[queue_index] = index;
             } else {
                 #ifdef DEBUG_QUEUE
                 debug("update prev index (%d): %d -> %d\n", queue->queue_pool[index].next_index, queue->queue_pool[queue->queue_pool[index].next_index].prev_index, index);
@@ -102,11 +105,11 @@ void insert_queue(struct queue_t * queue, int after, int before, int index)
             debug("update next index (%d): %d -> %d\n", index, queue->queue_pool[index].next_index, before);
             #endif
             queue->queue_pool[index].next_index = before;
-            if (before == queue->queue_head_index) {
+            if (before == queue->queue_head_index[queue_index]) {
                 #ifdef DEBUG_QUEUE
-                debug("update head index: %d -> %d\n", queue->queue_head_index, index);
+                debug("update head index: %d -> %d\n", queue->queue_head_index[queue_index], index);
                 #endif
-                queue->queue_head_index = index;
+                queue->queue_head_index[queue_index] = index;
             } else {
                 #ifdef DEBUG_QUEUE
                 debug("update next index (%d): %d -> %d\n", queue->queue_pool[index].prev_index, queue->queue_pool[queue->queue_pool[index].prev_index].next_index, index);
@@ -127,7 +130,7 @@ struct context_t context;
 void sorted_add(struct context_t * ctx, int n)
 {
     int len = strlen(ctx->words[n]);
-    int index = ctx->queue[len].queue_head_index;
+    int index = ctx->queue[len].queue_head_index[0];
     while (index != -1) {
         char * word = ctx->words[index];
         int compare = strcmp(word, ctx->words[n]);
@@ -141,7 +144,7 @@ void sorted_add(struct context_t * ctx, int n)
         index = ctx->queue[len].queue_pool[index].next_index;
     }
 
-    insert_queue(&ctx->queue[len], ctx->queue[len].queue_tail_index, -1, n);
+    insert_queue(&ctx->queue[len], ctx->queue[len].queue_tail_index[0], -1, n);
 }
 
 void solve(struct context_t * ctx)
@@ -153,7 +156,7 @@ void solve(struct context_t * ctx)
     }
 
     for (int len = 0; len <= 50; len++) {
-        int index = ctx->queue[len].queue_head_index;
+        int index = ctx->queue[len].queue_head_index[0];
         while (index != -1) {
             printf("%s\n", ctx->words[index]);
             index = ctx->queue[len].queue_pool[index].next_index;
