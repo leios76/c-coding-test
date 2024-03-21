@@ -48,7 +48,6 @@ void remove_queue(struct context_t * ctx, int index)
 
 void insert_queue(struct context_t * ctx, int after, int before, int index)
 {
-
 }
 
 

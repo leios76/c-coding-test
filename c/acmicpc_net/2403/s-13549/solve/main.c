@@ -5,7 +5,7 @@
 
 #ifdef DEBUG_OUTPUT
     #define debug(...)  printf(__VA_ARGS__)
-    //#define DEBUG_QUEUE
+//#define DEBUG_QUEUE
 #else
     #define debug(...)
 #endif
@@ -198,7 +198,7 @@ void solve(struct context_t * ctx)
             }
         }
     }
-        debug("Checking index %d, %d\n", ctx->queue.queue_head_index, ctx->queue.queue_tail_index);
+    debug("Checking index %d, %d\n", ctx->queue.queue_head_index, ctx->queue.queue_tail_index);
 
     printf("%d\n", ctx->time_spent[ctx->k]);
 }

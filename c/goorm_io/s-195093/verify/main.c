@@ -18,7 +18,7 @@ int solve(struct context_t * ctx)
     int min_value = 0x7FFFFFFF;
     while (1) {
         int sum = 0;
-        int curr[3] = {0, 0, 0};
+        int curr[3] = { 0, 0, 0 };
         for (int i = 0; i < ctx->n; i++) {
             int m = (curr[ ctx->usage[i] ] - ctx->value[i] + 10) % 10;
             int p = (ctx->value[i] - curr[ ctx->usage[i] ] + 10) % 10;

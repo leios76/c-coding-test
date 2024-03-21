@@ -25,11 +25,12 @@ struct context_t context;
 
 
 struct name_t sort_buffer[500000];
-void merge_sort(struct name_t arr[], int left, int right) {
-	if (left < right) {
-		int mid = (left + right) / 2;
-		merge_sort(arr, left, mid);
-		merge_sort(arr, mid + 1, right);
+void merge_sort(struct name_t arr[], int left, int right)
+{
+    if (left < right) {
+        int mid = (left + right) / 2;
+        merge_sort(arr, left, mid);
+        merge_sort(arr, mid + 1, right);
 
         int left_index = left;
         int right_index = mid + 1;
@@ -37,15 +38,14 @@ void merge_sort(struct name_t arr[], int left, int right) {
         while (index <= mid && right_index <= right) {
             if (strcmp(arr[index].name, arr[right_index].name) <= 0) {
                 memcpy(&sort_buffer[left_index++], &arr[index++], sizeof(struct name_t));
-            }
-            else {
+            } else {
                 memcpy(&sort_buffer[left_index++], &arr[right_index++], sizeof(struct name_t));
             }
         }
         memcpy(&sort_buffer[left_index], &arr[index], sizeof(struct name_t) * (mid - index + 1));
         memcpy(&sort_buffer[left_index + (mid - index + 1)], &arr[right_index], sizeof(struct name_t) * (right - right_index + 1));
         memcpy(&arr[left], &sort_buffer[left], sizeof(struct name_t) * (right - left + 1));
-	}
+    }
 }
 
 void solve(struct context_t * ctx)

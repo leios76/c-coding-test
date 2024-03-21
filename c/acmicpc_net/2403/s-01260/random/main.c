@@ -24,7 +24,7 @@ int main()
 
     printf("%d %d\n", n, m, v);
 
-    for (int i = 1; i <= m; ) {
+    for (int i = 1; i <= m;) {
         s = get_rand(1, n);
         e = get_rand(1, n);
         if (s == e) {

@@ -16,13 +16,12 @@ struct context_t context;
 
 void solve(struct context_t * ctx)
 {
-printf("         ,r'\"7\n");
-printf("r`-_   ,'  ,/\n");
-printf(" \\. \". L_r'\n");
-printf("   `~\\/\n");
-printf("      |\n");
-printf("      |\n");
-
+    printf("         ,r'\"7\n");
+    printf("r`-_   ,'  ,/\n");
+    printf(" \\. \". L_r'\n");
+    printf("   `~\\/\n");
+    printf("      |\n");
+    printf("      |\n");
 }
 
 void init_data(struct context_t * ctx)

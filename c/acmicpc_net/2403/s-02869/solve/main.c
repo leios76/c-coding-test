@@ -21,8 +21,8 @@ void solve(struct context_t * ctx)
 {
     int result = 0;
     int d = ctx->a - ctx->b;
-    ctx->c = (int)((ctx->v - ctx->a)/d) * d;
-    result += (int)((ctx->v - ctx->a)/d);
+    ctx->c = (int)((ctx->v - ctx->a) / d) * d;
+    result += (int)((ctx->v - ctx->a) / d);
     while (ctx->c < ctx->v) {
         result++;
         ctx->c += ctx->a;

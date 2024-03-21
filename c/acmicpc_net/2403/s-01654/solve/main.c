@@ -29,17 +29,17 @@ void solve(struct context_t * ctx)
 
         int count = 0;
         for (int k = 0; k < ctx->k; k++) {
-            count += (ctx->length[k]/d);
+            count += (ctx->length[k] / d);
         }
 
-		if (ctx->n <= count && length < d) {
-			length = d;
+        if (ctx->n <= count && length < d) {
+            length = d;
         }
 
         if (ctx->n > count) {
-            e = d -1;
+            e = d - 1;
         } else {
-            s = d +1;
+            s = d + 1;
         }
     }
 

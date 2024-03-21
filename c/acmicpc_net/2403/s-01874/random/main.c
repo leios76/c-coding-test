@@ -7,7 +7,7 @@
 int max_n = 100000;
 int min_n = 1;
 
-uint32_t bitmap[100031/32];
+uint32_t bitmap[100031 / 32];
 
 int main()
 {
@@ -21,12 +21,12 @@ int main()
 
     for (int i = 0; i < n;) {
         int v = rand() % n + 1;
-        if ((bitmap[v/32] & (1 << v)) != 0) {
+        if ((bitmap[v / 32] & (1 << v)) != 0) {
             continue;
         }
         printf("%d\n", v);
         i++;
-        bitmap[v/32] |= (1 << v);
+        bitmap[v / 32] |= (1 << v);
     }
     return 0;
 }

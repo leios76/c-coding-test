@@ -36,7 +36,7 @@ void init_data(struct context_t * ctx)
     for (int n = 0; n < ctx->n; n++) {
         scanf("%d", &ctx->numbers[n]);
         int v = (ctx->numbers[n] + 1000000);
-        ctx->bitmap[v / 32] |= (1 << (v%32));
+        ctx->bitmap[v / 32] |= (1 << (v % 32));
     }
 }
 

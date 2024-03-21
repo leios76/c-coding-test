@@ -21,8 +21,8 @@ struct context_t {
 };
 struct context_t context;
 
-int diff_r[4] = {-1, 0, 1, 0};
-int diff_c[4] = {0, 1, 0, -1};
+int diff_r[4] = { -1, 0, 1, 0 };
+int diff_c[4] = { 0, 1, 0, -1 };
 
 int move(struct context_t * ctx)
 {
@@ -31,8 +31,8 @@ int move(struct context_t * ctx)
     int d;
     debug("scan %d,%d(%d)\n", ctx->r, ctx->c, ctx->d);
     for (d = 0; d < 4; d++) {
-        dr = diff_r[(ctx->d + 8 - d - 1)%4];
-        dc = diff_c[(ctx->d + 8 - d - 1)%4];
+        dr = diff_r[(ctx->d + 8 - d - 1) % 4];
+        dc = diff_c[(ctx->d + 8 - d - 1) % 4];
 
         if (ctx->r + dr < 0 || ctx->r + dr > ctx->n - 1 || ctx->c + dc < 0 || ctx->c + dc > ctx->m - 1) {
             debug("skip %d,%d(%d) -> %d,%d\n", ctx->r, ctx->c, (ctx->d + 8 - d - 1) % 4, ctx->r + dr, ctx->c + dc);
@@ -48,8 +48,8 @@ int move(struct context_t * ctx)
         }
     }
 
-    dr = diff_r[(ctx->d + 4 - d)%4];
-    dc = diff_c[(ctx->d + 4 - d)%4];
+    dr = diff_r[(ctx->d + 4 - d) % 4];
+    dc = diff_c[(ctx->d + 4 - d) % 4];
 
     if (ctx->r - dr < 0 || ctx->r - dr > ctx->n - 1 || ctx->c - dc < 0 || ctx->c - dc > ctx->m - 1 || ctx->map[ctx->r - dr][ctx->c - dc] == 1) {
         debug("stop %d,%d(%d) -> %d,%d\n", ctx->r, ctx->c, (ctx->d + 8 - d) % 4, ctx->r - dr, ctx->c - dc);

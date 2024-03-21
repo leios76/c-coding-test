@@ -81,9 +81,9 @@ void solve(struct context_t * ctx)
             }
 
             if (ctx->ma[m] < ctx->a[ d]) {
-                e = d -1;
+                e = d - 1;
             } else {
-                s = d +1;
+                s = d + 1;
             }
         }
         printf("%d\n", result);

@@ -23,11 +23,12 @@ struct context_t context;
 
 
 int sort_buffer[500000];
-void merge_sort(int arr[], int left, int right) {
-	if (left < right) {
-		int mid = (left + right) / 2;
-		merge_sort(arr, left, mid);
-		merge_sort(arr, mid + 1, right);
+void merge_sort(int arr[], int left, int right)
+{
+    if (left < right) {
+        int mid = (left + right) / 2;
+        merge_sort(arr, left, mid);
+        merge_sort(arr, mid + 1, right);
 
         int left_index = left;
         int right_index = mid + 1;
@@ -35,15 +36,14 @@ void merge_sort(int arr[], int left, int right) {
         while (index <= mid && right_index <= right) {
             if (arr[index] <= arr[right_index]) {
                 sort_buffer[left_index++] = arr[index++];
-            }
-            else {
+            } else {
                 sort_buffer[left_index++] = arr[right_index++];
             }
         }
         memcpy(&sort_buffer[left_index], &arr[index], sizeof(int) * (mid - index + 1));
         memcpy(&sort_buffer[left_index + (mid - index + 1)], &arr[right_index], sizeof(int) * (right - right_index + 1));
         memcpy(&arr[left], &sort_buffer[left], sizeof(int) * (right - left + 1));
-	}
+    }
 }
 
 void solve(struct context_t * ctx)
@@ -59,7 +59,7 @@ void solve(struct context_t * ctx)
         int avg = (ctx->total * 1.0 / ctx->n - 0.5);
         printf("%d\n", avg);
     }
-    printf("%d\n", ctx->v[ctx->n/2]);
+    printf("%d\n", ctx->v[ctx->n / 2]);
     printf("%d\n", (ctx->max_c_v[1] == -4001) ? ctx->max_c_v[0]:ctx->max_c_v[1]);
     printf("%d\n", ctx->v[ctx->n - 1] - ctx->v[0]);
 }

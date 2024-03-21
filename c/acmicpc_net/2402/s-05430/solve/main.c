@@ -25,20 +25,20 @@ void solve(struct context_t * ctx)
     int error = 0;
     for (int p = 0; p < strlen(ctx->p); p++) {
         switch (ctx->p[p]) {
-            case 'R':
-                direction = !direction;
-                break;
-            case 'D':
-                if (direction) {
-                    start_index++;
-                } else {
-                    end_index--;
-                }
-                debug("%d ~ %d\n", start_index, end_index);
-                if (end_index - start_index + 1 < 0) {
-                    error = 1;
-                }
-                break;
+        case 'R':
+            direction = !direction;
+            break;
+        case 'D':
+            if (direction) {
+                start_index++;
+            } else {
+                end_index--;
+            }
+            debug("%d ~ %d\n", start_index, end_index);
+            if (end_index - start_index + 1 < 0) {
+                error = 1;
+            }
+            break;
         }
     }
     if (error) {
@@ -64,7 +64,6 @@ void solve(struct context_t * ctx)
         }
         printf("]\n");
     }
-
 }
 
 char line[100000 * 110];

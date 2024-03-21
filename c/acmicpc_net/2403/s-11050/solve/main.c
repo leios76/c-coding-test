@@ -31,7 +31,7 @@ int get_factorial(struct context_t * ctx, int n)
 void solve(struct context_t * ctx)
 {
     int result = 0;
-    result = get_factorial(ctx, ctx->n) / ( get_factorial(ctx, ctx->n - ctx->k) * get_factorial(ctx, ctx->k));
+    result = get_factorial(ctx, ctx->n) / (get_factorial(ctx, ctx->n - ctx->k) * get_factorial(ctx, ctx->k));
     printf("%d\n", result);
 }
 

@@ -58,7 +58,7 @@ void solve(struct context_t * ctx)
         }
         n = get_min_village(ctx);
         debug(" next village: %d\n", n + 1);
-    } while (n != - 1);
+    } while (n != -1);
     printf("%d\n", ctx->distance[ctx->end - 1]);
 }
 

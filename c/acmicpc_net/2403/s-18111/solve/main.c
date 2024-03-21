@@ -16,7 +16,7 @@ struct queue_entity_t {
 };
 
 struct queue_t {
-    struct queue_entity_t queue_pool[512*512];
+    struct queue_entity_t queue_pool[512 * 512];
     int queue_head_index[257];
     int queue_tail_index[257];
     int queue_size[257];

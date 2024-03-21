@@ -20,7 +20,7 @@ int main()
 
     // 현재 시간을 얻어온다.
     clock_gettime(CLOCK_MONOTONIC, &mytime);
-    seed = ( mytime.tv_sec * 1000LL + mytime.tv_nsec / 1000LL / 1000LL);
+    seed = (mytime.tv_sec * 1000LL + mytime.tv_nsec / 1000LL / 1000LL);
 
     srand(seed);
     n = rand() % (max_n - min_n + 1) + min_n;

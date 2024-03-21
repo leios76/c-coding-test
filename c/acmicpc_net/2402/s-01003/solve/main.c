@@ -18,7 +18,8 @@ struct context_t {
 };
 struct context_t context;
 
-int fibonacci(struct context_t * ctx, int n) {
+int fibonacci(struct context_t * ctx, int n)
+{
     if (ctx->dp_f[n] != 0) {
         return ctx->dp_f[n];
     }
@@ -34,8 +35,8 @@ int fibonacci(struct context_t * ctx, int n) {
         return 1;
     } else {
         ctx->dp_f[n] = fibonacci(ctx, n - 1) + fibonacci(ctx, n - 2);
-        ctx->dp_0[n] = ((n - 1 > - 1) ? ctx->dp_0[n - 1]:0) + ((n - 2 > -1) ? ctx->dp_0[n - 2] : 0);
-        ctx->dp_1[n] = ((n - 1 > - 1) ? ctx->dp_1[n - 1]:0) + ((n - 2 > -1) ? ctx->dp_1[n - 2] : 0);
+        ctx->dp_0[n] = ((n - 1 > -1) ? ctx->dp_0[n - 1]:0) + ((n - 2 > -1) ? ctx->dp_0[n - 2] : 0);
+        ctx->dp_1[n] = ((n - 1 > -1) ? ctx->dp_1[n - 1]:0) + ((n - 2 > -1) ? ctx->dp_1[n - 2] : 0);
         return ctx->dp_f[n];
     }
 }
@@ -50,7 +51,6 @@ void solve(struct context_t * ctx)
         fibonacci(ctx, ctx->n[t]);
 
         printf("%d %d\n", ctx->dp_0[ctx->n[t]], ctx->dp_1[ctx->n[t]]);
-
     }
     return 0;
 }

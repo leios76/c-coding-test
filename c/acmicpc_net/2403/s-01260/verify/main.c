@@ -123,7 +123,7 @@ struct context_t {
     int n;
     int m;
     int v;
-    int edge[1001][1032/32];
+    int edge[1001][1032 / 32];
     int s[10001];
     int e[10001];
     int dfs_v[1001];
@@ -139,11 +139,11 @@ void dfs(struct context_t * ctx, int s)
     for (int m = 0; m < ctx->m; m++) {
         ctx->dfs_v[s] = 1;
         for (int b = 0; b <= ctx->n; b++) {
-            if (ctx->edge[s][b/32] == 0) {
+            if (ctx->edge[s][b / 32] == 0) {
                 b += 31;
                 continue;
             }
-            if (ctx->dfs_v[b] == 0 && (ctx->edge[s][b/32] & (1 << b))) {
+            if (ctx->dfs_v[b] == 0 && (ctx->edge[s][b / 32] & (1 << b))) {
                 dfs(ctx, b);
             }
         }
@@ -159,11 +159,11 @@ void bfs(struct context_t * ctx)
         ctx->bfs_v[index] = 1;
 
         for (int b = 0; b <= ctx->n; b++) {
-            if (ctx->edge[index][b/32] == 0) {
+            if (ctx->edge[index][b / 32] == 0) {
                 b += 31;
                 continue;
             }
-            if (ctx->bfs_v[b] == 0 && (ctx->edge[index][b/32] & (1 << b))) {
+            if (ctx->bfs_v[b] == 0 && (ctx->edge[index][b / 32] & (1 << b))) {
                 insert_queue(&ctx->queue, ctx->queue.queue_tail_index, -1, b);
                 ctx->bfs_v[b] = 1;
             }
@@ -192,8 +192,8 @@ void init_data(struct context_t * ctx)
 
     for (int m = 0; m < ctx->m; m++) {
         scanf("%d%d", &ctx->s[m], &ctx->e[m]);
-        ctx->edge[ctx->s[m]][ctx->e[m]/32] |= (1 << (ctx->e[m] % 32));
-        ctx->edge[ctx->e[m]][ctx->s[m]/32] |= (1 << (ctx->s[m] % 32));
+        ctx->edge[ctx->s[m]][ctx->e[m] / 32] |= (1 << (ctx->e[m] % 32));
+        ctx->edge[ctx->e[m]][ctx->s[m] / 32] |= (1 << (ctx->s[m] % 32));
     }
 }
 

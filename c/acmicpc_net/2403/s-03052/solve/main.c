@@ -19,7 +19,7 @@ void solve(struct context_t * ctx)
 {
     int result = 0;
     for (int i = 0; i < 10; i++) {
-        ctx->count[ctx->n[i]%42]++;
+        ctx->count[ctx->n[i] % 42]++;
     }
     for (int i = 0; i < 42; i++) {
         if (ctx->count[i] > 0) {

@@ -18,8 +18,8 @@ struct context_t context;
 void solve(struct context_t * ctx)
 {
     int result = 0;
-	ctx->dp[0] = 0;
-	ctx->dp[1] = 1;
+    ctx->dp[0] = 0;
+    ctx->dp[1] = 1;
     ctx->dp[2] = 2;
     for (int n = 3; n <= ctx->n; n++) {
         ctx->dp[n] = (ctx->dp[n - 1] % 10007) + (ctx->dp[n - 2] % 10007);

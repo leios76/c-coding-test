@@ -15,8 +15,8 @@ struct context_t {
     uint64_t map[64];
 };
 struct context_t context;
-char board[9] = {0, 0, 0, 0, 0, 0, 0, 0, 0};
-char modified[9] = {0, 0, 0, 0, 0, 0, 0, 0, 0};
+char board[9] = { 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+char modified[9] = { 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 
 int get_count(struct context_t * ctx, int x, int y)
 {

@@ -15,11 +15,11 @@ int solve(struct context_t * ctx)
 
 void init_data(struct context_t * ctx)
 {
-printf("|\\_/|\n");
-printf("|q p|   /}\n");
-printf("( 0 )\"\"\"\\\n");
-printf("|\"^\"`    |\n");
-printf("||_/=\\\\__|\n");
+    printf("|\\_/|\n");
+    printf("|q p|   /}\n");
+    printf("( 0 )\"\"\"\\\n");
+    printf("|\"^\"`    |\n");
+    printf("||_/=\\\\__|\n");
 
     memset(ctx, 0, sizeof(struct context_t));
 }

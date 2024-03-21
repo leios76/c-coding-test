@@ -21,57 +21,57 @@ int check_string(char * line, int length)
     int completed = 0;
     int repeat_count = 0;
 
-    for (int i = 0; i < length; ) {
+    for (int i = 0; i < length;) {
         switch (state) {
-            case 0:
-                if (memcmp(&line[i], "10", 2) == 0) {
-                    state = 1;
-                    i += 2;
-                    completed = 0;
-                } else if (memcmp(&line[i], "01", 2) == 0) {
-                    state = 0;
-                    i += 2;
-                    completed = 1;
-                } else {
+        case 0:
+            if (memcmp(&line[i], "10", 2) == 0) {
+                state = 1;
+                i += 2;
+                completed = 0;
+            } else if (memcmp(&line[i], "01", 2) == 0) {
+                state = 0;
+                i += 2;
+                completed = 1;
+            } else {
+                return 0;
+            }
+            break;
+        case 1:
+            if (line[i] == '0') {
+                repeat_count++;
+                i++;
+            } else {
+                if (repeat_count == 0) {
                     return 0;
                 }
-                break;
-            case 1:
-                if (line[i] == '0') {
+                repeat_count = 0;
+                state = 2;
+            }
+            break;
+        case 2:
+            if (line[i] == '1') {
+                if (repeat_count > 0 && memcmp(&line[i], "101", 3) == 0) {
+                    state = 0;
+                    i += 3;
+                    completed = 1;
+                } else if (repeat_count > 0 && memcmp(&line[i], "100", 3) == 0) {
+                    state = 1;
+                    i += 3;
+                    completed = 0;
+                    repeat_count = 1;
+                } else {
+                    completed = 1;
                     repeat_count++;
                     i++;
-                } else {
-                    if (repeat_count == 0) {
-                        return 0;
-                    }
-                    repeat_count = 0;
-                    state = 2;
                 }
-                break;
-            case 2:
-                if (line[i] == '1') {
-                    if (repeat_count > 0 && memcmp(&line[i], "101", 3) == 0) {
-                        state = 0;
-                        i += 3;
-                        completed = 1;
-                    } else if (repeat_count > 0 && memcmp(&line[i], "100", 3) == 0) {
-                        state = 1;
-                        i += 3;
-                        completed = 0;
-                        repeat_count = 1;
-                    } else {
-                        completed = 1;
-                        repeat_count++;
-                        i++;
-                    }
-                } else {
-                    if (repeat_count == 0) {
-                        return 0;
-                    }
-                    repeat_count = 0;
-                    state = 0;
+            } else {
+                if (repeat_count == 0) {
+                    return 0;
                 }
-                break;
+                repeat_count = 0;
+                state = 0;
+            }
+            break;
         }
     }
     return completed;

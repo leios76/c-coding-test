@@ -14,16 +14,20 @@ int get(int depth, int n)
         return 1;
     }
     switch (n) {
-        case 0:
-            return get(depth - 1, 0) + get(depth - 1, 1) + get(depth - 1, 2) + get(depth - 1, 4) + get(depth - 1, 5);
-        case 1:
-            return get(depth - 1, 0) + get(depth - 1, 2) + get(depth - 1, 4);
-        case 2:
-            return get(depth - 1, 0) + get(depth - 1, 1) + get(depth - 1, 4) + get(depth - 1, 5);
-        case 4:
-            return get(depth - 1, 0) + get(depth - 1, 1) + get(depth - 1, 2);
-        case 5:
-            return get(depth - 1, 0) + get(depth - 1, 2);
+    case 0:
+        return get(depth - 1, 0) + get(depth - 1, 1) + get(depth - 1, 2) + get(depth - 1, 4) + get(depth - 1, 5);
+
+    case 1:
+        return get(depth - 1, 0) + get(depth - 1, 2) + get(depth - 1, 4);
+
+    case 2:
+        return get(depth - 1, 0) + get(depth - 1, 1) + get(depth - 1, 4) + get(depth - 1, 5);
+
+    case 4:
+        return get(depth - 1, 0) + get(depth - 1, 1) + get(depth - 1, 2);
+
+    case 5:
+        return get(depth - 1, 0) + get(depth - 1, 2);
     }
 }
 

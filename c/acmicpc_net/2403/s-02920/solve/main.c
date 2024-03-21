@@ -17,7 +17,7 @@ struct context_t context;
 void solve(struct context_t * ctx)
 {
     int direction = -1;
-    char result[3][32] = {"ascending", "descending", "mixed"};
+    char result[3][32] = { "ascending", "descending", "mixed" };
     for (int n = 1; n < 8; n++) {
         if (ctx->n[n] > ctx->n[n - 1]) {
             if (direction == -1) {
@@ -41,7 +41,7 @@ void solve(struct context_t * ctx)
 void init_data(struct context_t * ctx)
 {
     memset(ctx, 0, sizeof(struct context_t));
-    for (int n = 0; n < 8; n++)  {
+    for (int n = 0; n < 8; n++) {
         scanf("%d", &ctx->n[n]);
     }
 }

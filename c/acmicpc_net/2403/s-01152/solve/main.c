@@ -21,27 +21,27 @@ void solve(struct context_t * ctx)
     int length = strlen(ctx->line);
     for (int i = 0; i < length;) {
         debug("check [%c] state %d result %d\n", ctx->line[i], state, result);
-        switch(state) {
-            case 0:
-                if (ctx->line[i] != ' ') {
-                    state = 1;
-                } else {
-                    i++;
-                }
-                break;
-            case 1:
-                if (ctx->line[i] == ' ') {
-                    result++;
-                    state = 0;
-                } else {
-                    i++;
-                }
-                if (i == length) {
-                    result++;
-                }
-                break;
-            case 2:
-                break;
+        switch (state) {
+        case 0:
+            if (ctx->line[i] != ' ') {
+                state = 1;
+            } else {
+                i++;
+            }
+            break;
+        case 1:
+            if (ctx->line[i] == ' ') {
+                result++;
+                state = 0;
+            } else {
+                i++;
+            }
+            if (i == length) {
+                result++;
+            }
+            break;
+        case 2:
+            break;
         }
     }
     printf("%d\n", result);

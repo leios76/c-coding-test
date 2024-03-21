@@ -43,7 +43,6 @@ void solve(struct context_t * ctx)
             }
         }
         result++;
-
     }
     printf("%d\n", result);
 }

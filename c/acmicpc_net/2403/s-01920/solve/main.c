@@ -14,11 +14,12 @@
 
 
 int sort_buffer[100000];
-void merge_sort(int arr[], int left, int right) {
-	if (left < right) {
-		int mid = (left + right) / 2;
-		merge_sort(arr, left, mid);
-		merge_sort(arr, mid + 1, right);
+void merge_sort(int arr[], int left, int right)
+{
+    if (left < right) {
+        int mid = (left + right) / 2;
+        merge_sort(arr, left, mid);
+        merge_sort(arr, mid + 1, right);
 
         int left_index = left;
         int right_index = mid + 1;
@@ -26,15 +27,14 @@ void merge_sort(int arr[], int left, int right) {
         while (index <= mid && right_index <= right) {
             if (arr[index] <= arr[right_index]) {
                 sort_buffer[left_index++] = arr[index++];
-            }
-            else {
+            } else {
                 sort_buffer[left_index++] = arr[right_index++];
             }
         }
         memcpy(&sort_buffer[left_index], &arr[index], sizeof(int) * (mid - index + 1));
         memcpy(&sort_buffer[left_index + (mid - index + 1)], &arr[right_index], sizeof(int) * (right - right_index + 1));
         memcpy(&arr[left], &sort_buffer[left], sizeof(int) * (right - left + 1));
-	}
+    }
 }
 
 struct context_t {
@@ -68,9 +68,9 @@ void solve(struct context_t * ctx)
 
 
             if (ctx->ma[m] < ctx->a[ d]) {
-                e = d -1;
+                e = d - 1;
             } else {
-                s = d +1;
+                s = d + 1;
             }
         }
         printf("%d\n", result);
@@ -100,7 +100,7 @@ int main(int argc, char ** argv)
 
     // 현재 시간을 얻어온다.
     clock_gettime(CLOCK_MONOTONIC, &mytime);
-    elapsed = ( mytime.tv_sec * 1000LL + mytime.tv_nsec / 1000LL / 1000LL);
+    elapsed = (mytime.tv_sec * 1000LL + mytime.tv_nsec / 1000LL / 1000LL);
 #endif
 
     //scanf("%d", &t);
@@ -111,7 +111,7 @@ int main(int argc, char ** argv)
 
 #ifdef DEBUG_OUTPUT
     clock_gettime(CLOCK_MONOTONIC, &mytime);
-    elapsed = ( mytime.tv_sec * 1000LL + mytime.tv_nsec / 1000LL / 1000LL) - elapsed;
+    elapsed = (mytime.tv_sec * 1000LL + mytime.tv_nsec / 1000LL / 1000LL) - elapsed;
 #endif
     return elapsed;
 }
