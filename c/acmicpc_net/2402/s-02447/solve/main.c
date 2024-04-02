@@ -17,21 +17,21 @@ struct context_t context;
 void print_pattern(struct context_t * ctx, char ch, int i, int size)
 {
     for (int j = 0; j < 3; j++) {
-        if (((i/size)%3) == 1 && j == 1) {
+        if (((i / size) % 3) == 1 && j == 1) {
             if (size == 1) {
                 printf(" ");
             } else {
-                print_pattern(ctx, ' ', i, size/3);
+                print_pattern(ctx, ' ', i, size / 3);
             }
         } else {
             if (size == 1) {
                 printf("%c", ch);
             } else {
-                print_pattern(ctx, ch, i, size/3);
+                print_pattern(ctx, ch, i, size / 3);
             }
         }
     }
-    if (size == ctx->n/3) {
+    if (size == ctx->n / 3) {
         printf("\n");
     }
 }

@@ -28,7 +28,7 @@ void calc_distance(struct context_t * ctx)
 {
     for (int h = 0; h < ctx->house_count; h++) {
         for (int s = 0; s < ctx->shop_count; s++) {
-            ctx->distance[h][s] = abs( (ctx->house[h] >> 8) - (ctx->shop[s] >> 8) ) + abs( (ctx->house[h] & 0xFF) - (ctx->shop[s] & 0xFF) );
+            ctx->distance[h][s] = abs((ctx->house[h] >> 8) - (ctx->shop[s] >> 8)) + abs((ctx->house[h] & 0xFF) - (ctx->shop[s] & 0xFF));
             debug("%d ", ctx->distance[h][s]);
         }
         debug("\n");

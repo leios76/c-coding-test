@@ -70,10 +70,10 @@ void solve(struct context_t * ctx)
 {
     int result = 0;
 
-    int diff[6] = {-1, 1, -128, 128, -16384, 16384};
-    int diff_h[6] = {0, 0, 0, 0, -1, 1};
-    int diff_n[6] = {0, 0, -1, 1, 0, 0};
-    int diff_m[6] = {-1, 1, 0, 0, 0, 0};
+    int diff[6] = { -1, 1, -128, 128, -16384, 16384 };
+    int diff_h[6] = { 0, 0, 0, 0, -1, 1 };
+    int diff_n[6] = { 0, 0, -1, 1, 0, 0 };
+    int diff_m[6] = { -1, 1, 0, 0, 0, 0 };
     struct dynamic_queue_t * queue = &ctx->queue;
     while (queue->read_index != queue->written_index) {
         queue->turn_index = queue->written_index;
@@ -93,12 +93,12 @@ void solve(struct context_t * ctx)
                 }
                 debug("check %d, %d, %d = %d\n", nh, nn, nm, ctx->tbl[coord + diff[i]]);
                 switch (ctx->tbl[coord + diff[i]]) {
-                    case 0:
-                        ctx->tbl[coord + diff[i]] = ctx->turn + 1;
-                        push_queue(queue, coord + diff[i]);
-                        ctx->remain--;
-                        debug("add queue: %d, %d, %d\n", nh, nn, nm);
-                        break;
+                case 0:
+                    ctx->tbl[coord + diff[i]] = ctx->turn + 1;
+                    push_queue(queue, coord + diff[i]);
+                    ctx->remain--;
+                    debug("add queue: %d, %d, %d\n", nh, nn, nm);
+                    break;
                 }
             }
         }

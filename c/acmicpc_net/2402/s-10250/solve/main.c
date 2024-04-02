@@ -20,7 +20,7 @@ void solve(struct context_t * ctx)
 {
     int result = 0;
     int floor = ((ctx->n - 1) % ctx->h) + 1;
-    int number = ((ctx->n - 1)/ctx->h) + 1;
+    int number = ((ctx->n - 1) / ctx->h) + 1;
     result = floor * 100 + number;
     printf("%d\n", result);
 }

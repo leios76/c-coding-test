@@ -8,7 +8,7 @@ struct context_t {
 };
 struct context_t context;
 
-int case_list[2][8] = {{1, 1, 1, 0, 1, 1, 0, 0}, {0, 0, 0, 0, 0, 0, 0, 0}};
+int case_list[2][8] = { { 1, 1, 1, 0, 1, 1, 0, 0 }, { 0, 0, 0, 0, 0, 0, 0, 0 } };
 
 int solve(struct context_t * ctx)
 {
@@ -20,7 +20,7 @@ int solve(struct context_t * ctx)
         case_list[(i + 1) % 2][4] = (case_list[i % 2][0] + case_list[i % 2][1] + case_list[i % 2][2]) % 100000007;
         case_list[(i + 1) % 2][5] = (case_list[i % 2][0] + case_list[i % 2][2]) % 100000007;
     }
-    return case_list[i%2][0];
+    return case_list[i % 2][0];
 }
 
 void init_data(struct context_t * ctx)

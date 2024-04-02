@@ -17,7 +17,7 @@ struct context_t context;
 
 void solve(struct context_t * ctx)
 {
-    ctx->h = (ctx->h + 23 + (ctx->m + 15)/60) % 24;
+    ctx->h = (ctx->h + 23 + (ctx->m + 15) / 60) % 24;
     ctx->m = (ctx->m + 15) % 60;
     printf("%d %d\n", ctx->h, ctx->m);
 }

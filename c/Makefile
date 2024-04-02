@@ -111,7 +111,7 @@ endef
 define COMPILE_C_CMDS
 	@mkdir -p $(dir $@)
 	@echo Compiling C [ $< ]
-	@$(strip ${CC} -o $@ -c -MD ${CFLAGS} ${SRC_CFLAGS} ${INCDIRS} ${OPTIMIZE_FLAG} ${DEBUG_FLAG} \
+	$(strip ${CC} -o $@ -c -MD ${CFLAGS} ${SRC_CFLAGS} ${INCDIRS} ${OPTIMIZE_FLAG} ${DEBUG_FLAG} \
 	    ${SRC_INCDIRS} ${SRC_DEFS} ${DEFS} $<)
 	@cp ${@:%$(suffix $@)=%.d} ${@:%$(suffix $@)=%.P}; \
 	 sed -e 's/#.*//' -e 's/^[^:]*: *//' -e 's/ *\\$$//' \
@@ -357,7 +357,7 @@ all: $(addprefix ${TARGET_DIR}/,${ALL_TGTS})
 
 .PHONY: debug
 debug: OPTIMIZE_FLAG := -O0
-debug: DEBUG_FLAG := -g3
+debug: DEBUG_FLAG := -g3 -DDEBUG_RUN -DDEBUG_OUTPUT
 debug: all
 
 # Add a new target rule for each user-defined target.

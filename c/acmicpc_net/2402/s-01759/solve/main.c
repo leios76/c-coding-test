@@ -26,22 +26,22 @@ void solve(struct context_t * ctx)
     for (int i = 25; i >= 0; i--) {
         if (ctx->cipher_mask & (1 << i)) {
             switch (i + 'a') {
-                case 'a':
-                case 'e':
-                case 'i':
-                case 'o':
-                case 'u':
-                    ctx->mo_mask |= (1 << remap_index);
-                    break;
-                default:
-                    ctx->ja_mask |= (1 << remap_index);
-                    break;
+            case 'a':
+            case 'e':
+            case 'i':
+            case 'o':
+            case 'u':
+                ctx->mo_mask |= (1 << remap_index);
+                break;
+            default:
+                ctx->ja_mask |= (1 << remap_index);
+                break;
             }
             ctx->mask_remap[remap_index++] = i;
         }
     }
 
-    for (int i = (1 << ctx->c) - 1; i > 0 ; i--) {
+    for (int i = (1 << ctx->c) - 1; i > 0; i--) {
         int mo_mask = i & ctx->mo_mask;
         int ja_mask = i & ctx->ja_mask;
         int ch_count = 0;
@@ -73,7 +73,7 @@ void solve(struct context_t * ctx)
         }
 
         //debug("ch %d, mo %d, ja %d, %06X & %06X = %06X \n", ch_count, mo_count, ja_count, i, ctx->mo_mask, mo_mask);
-        for (int c = ctx->c - 1; c >= 0 ; c--) {
+        for (int c = ctx->c - 1; c >= 0; c--) {
             if (i & (1 << c)) {
                 printf("%c", ctx->mask_remap[c] + 'a');
             }

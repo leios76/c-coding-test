@@ -10,7 +10,6 @@ struct context_t context;
 
 int solve(struct context_t * ctx)
 {
-
     printf("\\    /\\\n");
     printf(" )  ( ')\n");
     printf("(  /  )\n");

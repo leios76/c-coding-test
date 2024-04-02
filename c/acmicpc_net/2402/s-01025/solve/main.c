@@ -20,7 +20,7 @@ struct context_t context;
 int check_number(int a)
 {
     int r = sqrt(a);
-    return (r*r) == a;
+    return (r * r) == a;
 }
 
 int make_number(struct context_t * ctx, int start_r, int start_c, int move_r, int move_c)
@@ -29,7 +29,7 @@ int make_number(struct context_t * ctx, int start_r, int start_c, int move_r, in
     int v = 0;
     int n = start_r;
     int m = start_c;
-    for (; n >= 0 && n < ctx->n && m >= 0 && m < ctx->m; ) {
+    for (; n >= 0 && n < ctx->n && m >= 0 && m < ctx->m;) {
         v = v * 10 + ctx->tbl[n][m];
         if (check_number(v) && max_v < v) {
             max_v = v;
